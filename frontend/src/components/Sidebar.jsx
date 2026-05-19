@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, Calendar, FileText, Settings, LogOut, HelpCircle, User } from 'lucide-react'
+import { LayoutDashboard, Users, Calendar, FileText, Settings, LogOut, HelpCircle, User, Shield } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 
 function Sidebar({ active }) {
   const navigate = useNavigate()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
 
   const handleLogout = () => {
     logout()
@@ -18,6 +18,9 @@ function Sidebar({ active }) {
     { id: 'attendance', label: 'Attendance', icon: <Calendar size={20} />, path: '/attendance' },
     { id: 'reports', label: 'Reports', icon: <FileText size={20} />, path: '/reports' },
     { id: 'profile', label: 'My Profile', icon: <User size={20} />, path: '/profile' },
+    ...(user?.role === 'manager' || user?.role === 'admin' ? [
+      { id: 'audit', label: 'Audit Logs', icon: <Shield size={20} />, path: '/audit-logs' }
+    ] : []),
     { id: 'settings', label: 'Settings', icon: <Settings size={20} />, path: '/settings' },
   ]
 
