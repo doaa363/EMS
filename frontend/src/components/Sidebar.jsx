@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Users, Calendar, FileText, Settings, LogOut, HelpCircle, User, Shield } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
+import CommandPalette from './CommandPalette.jsx'
 
 function Sidebar({ active }) {
   const navigate = useNavigate()
   const { logout, user } = useAuth()
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false)
+
+  useEffect(() => {
+    const handleGlobalKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsPaletteOpen(prev => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleGlobalKey)
+    return () => window.removeEventListener('keydown', handleGlobalKey)
+  }, [])
 
   const handleLogout = () => {
     logout()
@@ -50,7 +63,17 @@ function Sidebar({ active }) {
         </nav>
       </div>
 
-      <div className="border-t border-gray-700 pt-4 space-y-2">
+      <div className="border-t border-gray-700 pt-4 space-y-3">
+        <button
+          onClick={() => setIsPaletteOpen(true)}
+          className="w-full flex items-center justify-between px-3 py-2 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-xs text-gray-400 transition"
+        >
+          <span className="flex items-center gap-1.5 font-medium text-cyan-400">
+            <span className="animate-pulse">✨</span> Magic Console
+          </span>
+          <span className="bg-slate-700 px-1.5 py-0.5 rounded text-[10px] font-mono border border-slate-600">Ctrl+K</span>
+        </button>
+
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded-lg transition"
@@ -62,6 +85,8 @@ function Sidebar({ active }) {
           <HelpCircle size={20} />
         </div>
       </div>
+
+      <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
     </aside>
   )
 }
