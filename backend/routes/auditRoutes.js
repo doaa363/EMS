@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const AuditLog = require('../models/AuditLog');
-const { protect, adminOnly } = require('../middlewares/authMiddleware');
-
-router.get('/', protect, adminOnly, async (req, res) => {
+const { protect, managerOrAdmin } = require('../middlewares/authMiddleware');
+router.get('/', protect, managerOrAdmin, async (req, res) => {
   try {
     const logs = await AuditLog.find().sort({ createdAt: -1 }).limit(100);
     res.json(logs);
@@ -11,5 +10,4 @@ router.get('/', protect, adminOnly, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
 module.exports = router;

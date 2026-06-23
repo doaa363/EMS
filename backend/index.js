@@ -24,21 +24,14 @@ io.on('connection', (socket) => {
 
 app.use(cors());
 app.use(express.json()); 
-
-// 4. الربط بالمسارات (التي أرسلتها أنت)
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/leaves', require('./routes/leaveRoutes'));
 app.use('/api/audit', require('./routes/auditRoutes'));
-
-
-// 5. مسار تجريبي بسيط
 app.get('/', (req, res) => {
     res.send('HRM System API is running...');
 });
-
-// 6. تشغيل السيرفر
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`server is running on port ${PORT}`);
 });

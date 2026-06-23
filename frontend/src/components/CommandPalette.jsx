@@ -2,14 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Sparkles, LayoutDashboard, Users, Calendar, FileText, Settings, User, Shield, CornerDownLeft } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
-
 function CommandPalette({ isOpen, onClose }) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [search, setSearch] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const inputRef = useRef(null)
-
   const items = [
     { id: 'dashboard', label: 'Go to Dashboard', icon: <LayoutDashboard size={18} />, path: '/dashboard' },
     { id: 'profile', label: 'View My Profile', icon: <User size={18} />, path: '/profile' },
@@ -21,11 +19,9 @@ function CommandPalette({ isOpen, onClose }) {
       { id: 'audit', label: 'View System Audit Logs', icon: <Shield size={18} />, path: '/audit-logs' }
     ] : []),
   ]
-
   const filteredItems = items.filter(item =>
     item.label.toLowerCase().includes(search.toLowerCase())
   )
-
   useEffect(() => {
     if (isOpen) {
       setSearch('')
@@ -33,7 +29,6 @@ function CommandPalette({ isOpen, onClose }) {
       setTimeout(() => inputRef.current?.focus(), 50)
     }
   }, [isOpen])
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isOpen) return
@@ -139,5 +134,4 @@ function CommandPalette({ isOpen, onClose }) {
     </div>
   )
 }
-
 export default CommandPalette

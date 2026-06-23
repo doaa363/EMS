@@ -36,15 +36,17 @@ function AuditLogsPage() {
     const filtered = logs.filter(log =>
       log.details?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.ipAddress?.includes(searchTerm) ||
-      log.userId?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      log.performedByName?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     setFilteredLogs(filtered)
   }, [searchTerm, logs])
 
   const getActionColor = (details) => {
-    if (details.includes('إنشاء') || details.includes('تسجيل')) return 'bg-emerald-50 text-emerald-700 border-emerald-100'
-    if (details.includes('تعديل') || details.includes('تحديث')) return 'bg-blue-50 text-blue-700 border-blue-100'
-    if (details.includes('حذف') || details.includes('إلغاء')) return 'bg-rose-50 text-rose-700 border-rose-100'
+    if (!details) return 'bg-slate-50 text-slate-700 border-slate-100'
+    const lower = details.toLowerCase();
+    if (lower.includes('create') || lower.includes('register')) return 'bg-emerald-50 text-emerald-700 border-emerald-100'
+    if (lower.includes('update') || lower.includes('edit')) return 'bg-blue-50 text-blue-700 border-blue-100'
+    if (lower.includes('delete') || lower.includes('remove')) return 'bg-rose-50 text-rose-700 border-rose-100'
     return 'bg-slate-50 text-slate-700 border-slate-100'
   }
 
@@ -118,7 +120,7 @@ function AuditLogsPage() {
                   <div className="w-2 h-2 rounded-full bg-cyan-500 mt-2 flex-shrink-0 animate-pulse"></div>
                   <div className="flex-1">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                      <p className="text-sm font-semibold text-gray-800">{log.userId?.name || 'Unknown User'}</p>
+                      <p className="text-sm font-semibold text-gray-800">{log.performedByName || 'Unknown User'}</p>
                       <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
                         <span className="flex items-center gap-1">
                           <Calendar size={12} />
@@ -132,9 +134,9 @@ function AuditLogsPage() {
                     </div>
                     <div className="mt-2 flex items-center gap-3">
                       <span className={`px-2 py-0.5 rounded text-xs font-semibold border ${getActionColor(log.details)}`}>
-                        {log.details.includes('حذف') ? 'DELETE' : log.details.includes('تحديث') || log.details.includes('تعديل') ? 'UPDATE' : 'CREATE'}
+                        {log.details?.toLowerCase().includes('delete') ? 'DELETE' : log.details?.toLowerCase().includes('update') || log.details?.toLowerCase().includes('edit') ? 'UPDATE' : 'CREATE'}
                       </span>
-                      <p className="text-sm text-gray-600 font-medium" dir="rtl">{log.details}</p>
+                      <p className="text-sm text-gray-600 font-medium">{log.details || 'No details provided'}</p>
                     </div>
                   </div>
                 </div>

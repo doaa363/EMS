@@ -35,7 +35,6 @@ export function TableSkeleton({ rows = 5, cols = 6 }) {
     </div>
   )
 }
-
 export function CardSkeleton({ count = 4 }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -49,7 +48,6 @@ export function CardSkeleton({ count = 4 }) {
     </div>
   )
 }
-
 export function ChartSkeleton() {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">

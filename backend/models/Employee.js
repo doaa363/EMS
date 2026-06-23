@@ -8,7 +8,7 @@ const employeeSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Please add an email'],
-        unique: true // لا يمكن تكرار البريد الإلكتروني
+        unique: true 
     },
     password: {
         type: String,
@@ -36,7 +36,6 @@ const employeeSchema = new mongoose.Schema({
         default: Date.now
     }
 }, {
-    timestamps: true // لإنشاء وقت الإنشاء والتحديث تلقائياً
+    timestamps: true
 });
-
 module.exports = mongoose.model('Employee', employeeSchema);

@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Users, Calendar, FileText, Settings, LogOut, HelpCircle, User, Shield } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import CommandPalette from './CommandPalette.jsx'
-
 function Sidebar({ active }) {
   const navigate = useNavigate()
   const { logout, user } = useAuth()
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
-
   useEffect(() => {
     const handleGlobalKey = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -90,5 +88,4 @@ function Sidebar({ active }) {
     </aside>
   )
 }
-
 export default Sidebar

@@ -1,9 +1,6 @@
 const Employee = require('../models/Employee');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-// @desc    Register a new employee
-// @route   POST /api/auth/register
 exports.register = async (req, res) => {
     try {
         const { name, email, password, jobRole, basicSalary, annualLeaveBalance, role } = req.body;
@@ -33,10 +30,7 @@ exports.register = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}; // <--- هنا كان القوس المفقود
-
-// @desc    Login employee & get token
-// @route   POST /api/auth/login
+}; 
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -70,10 +64,6 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// @desc    Get current employee data
-// @route   GET /api/auth/me
-// @access  Private (Needs Token)
 exports.changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
@@ -90,10 +80,6 @@ exports.changePassword = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// @desc    Get current employee data
-// @route   GET /api/auth/me
-// @access  Private (Needs Token)
 exports.getMe = async (req, res) => {
     try {
         const employee = await Employee.findById(req.user.id).select('-password');

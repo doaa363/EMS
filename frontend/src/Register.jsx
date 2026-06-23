@@ -16,8 +16,13 @@ function Register() {
     e.preventDefault()
     setError('')
     setSuccess('')
+    
+    let role = 'employee'
+    if (jobRole === 'HR Manager') role = 'manager'
+    if (jobRole === 'Admin') role = 'admin'
+
     try {
-      await axios.post('http://localhost:5000/api/auth/register', { name, email, password, jobRole })
+      await axios.post('http://localhost:5000/api/auth/register', { name, email, password, jobRole, role })
       setSuccess('Account created successfully! Redirecting to login...')
       setTimeout(() => navigate('/'), 2000)
     } catch (err) {

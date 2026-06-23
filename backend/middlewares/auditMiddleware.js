@@ -1,7 +1,4 @@
 const AuditLog = require('../models/AuditLog');
-
-// Logs an audit entry for successful JSON responses.
-// IMPORTANT: do not call next() until the response method is invoked.
 const auditLog = (action, targetModel = null) => (req, res, next) => {
   const originalJson = res.json.bind(res);
 
@@ -9,9 +6,9 @@ const auditLog = (action, targetModel = null) => (req, res, next) => {
     // Only log successful responses
     if (res.statusCode < 400 && req.user) {
       try {
-        const currentTime = new Date().toLocaleString('ar-EG');
-        const actionAr = action === 'CREATE' ? 'بإنشاء' : action === 'UPDATE' ? 'بتعديل' : 'بحذف';
-        const modelAr = targetModel || 'سجل';
+        const currentTime = new Date().toLocaleString('en-US');
+        const actionEn = action === 'CREATE' ? 'created' : action === 'UPDATE' ? 'updated' : 'deleted';
+        const modelEn = targetModel || 'Record';
         
         await AuditLog.create({
           performedBy: req.user.id,
@@ -19,7 +16,7 @@ const auditLog = (action, targetModel = null) => (req, res, next) => {
           action,
           targetModel,
           targetId: req.params?.id || data?._id || null,
-          details: `المسؤول [${req.user.name || 'Unknown'}] قام ${actionAr} [${modelAr}] في تمام الساعة [${currentTime}]`,
+          details: `Admin [${req.user.name || 'Unknown'}] ${actionEn} [${modelEn}] at [${currentTime}]`,
           ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
         });
       } catch (e) {
